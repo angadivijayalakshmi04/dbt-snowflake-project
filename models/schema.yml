@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned customer data from the raw customers table"
+
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_name
+        description: "Customer name"
+        data_tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned order data from the raw orders table"
+
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order"
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer who placed the order"
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
+
+      - name: order_date
+        description: "Date when the order was placed"
+        data_tests:
+          - not_null
+
+      - name: amount
+        description: "Order amount"
+        data_tests:
+          - not_null
