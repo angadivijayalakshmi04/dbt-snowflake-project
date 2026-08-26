@@ -2,5 +2,5 @@ SELECT
     order_id,
     customer_id,
     order_date,
-    amount
+    {{ format_amount('amount') }} AS amount
 FROM {{ ref('int_customer_orders') }}
