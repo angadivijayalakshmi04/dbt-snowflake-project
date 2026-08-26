@@ -3,4 +3,4 @@ SELECT
     CUSTOMER_NAME,
     CITY,
     COUNTRY
-FROM DBT_TRAINING.RAW.CUSTOMERS
+FROM {{ source('raw', 'customers') }}
