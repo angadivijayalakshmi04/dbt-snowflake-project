@@ -1,43 +1,25 @@
 version: 2
 
 models:
-
   - name: stg_customers
-    description: "Cleaned customer data from the raw customers table"
-
     columns:
-
       - name: customer_id
-        description: "Unique identifier for each customer"
         data_tests:
           - not_null
           - unique
 
       - name: customer_name
-        description: "Customer name"
         data_tests:
           - not_null
 
-      - name: city
-        description: "Customer city"
-
-      - name: country
-        description: "Customer country"
-
-
   - name: stg_orders
-    description: "Cleaned order data from the raw orders table"
-
     columns:
-
       - name: order_id
-        description: "Unique identifier for each order"
         data_tests:
           - not_null
           - unique
 
       - name: customer_id
-        description: "Customer who placed the order"
         data_tests:
           - not_null
           - relationships:
@@ -46,87 +28,50 @@ models:
                 field: customer_id
 
       - name: order_date
-        description: "Date when the order was placed"
         data_tests:
           - not_null
 
       - name: amount
-        description: "Order amount"
         data_tests:
           - not_null
-
 
   - name: int_customer_orders
-    description: "Customer and order data joined together"
-
     columns:
-
       - name: customer_id
-        description: "Customer identifier"
         data_tests:
           - not_null
 
-      - name: customer_name
-        description: "Customer name"
-
-      - name: city
-        description: "Customer city"
-
-      - name: country
-        description: "Customer country"
-
       - name: order_id
-        description: "Order identifier"
         data_tests:
           - not_null
 
       - name: order_date
-        description: "Date of the order"
         data_tests:
           - not_null
 
       - name: amount
-        description: "Order amount"
         data_tests:
           - not_null
 
-
   - name: dim_customers
-    description: "Customer dimension for analytics"
-
     columns:
-
       - name: customer_id
-        description: "Unique customer identifier"
         data_tests:
           - not_null
           - unique
 
       - name: customer_name
-        description: "Customer name"
         data_tests:
           - not_null
 
-      - name: city
-        description: "Customer city"
-
-      - name: country
-        description: "Customer country"
-
-
   - name: fact_orders
-    description: "Order fact table for analytics"
-
     columns:
-
       - name: order_id
-        description: "Unique order identifier"
         data_tests:
           - not_null
           - unique
 
       - name: customer_id
-        description: "Customer who placed the order"
         data_tests:
           - not_null
           - relationships:
@@ -135,11 +80,32 @@ models:
                 field: customer_id
 
       - name: order_date
-        description: "Date of the order"
         data_tests:
           - not_null
 
       - name: amount
-        description: "Order amount"
+        data_tests:
+          - not_null
+
+  - name: fct_orders_incremental
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: order_date
+        data_tests:
+          - not_null
+
+      - name: amount
         data_tests:
           - not_null
